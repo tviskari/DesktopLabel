@@ -20,9 +20,7 @@ namespace DesktopLabel
 
         private void Label_Load(object sender, EventArgs e)
         {
-            Rectangle workingArea = Screen.GetWorkingArea(this);
-            this.Location = new Point(workingArea.Right - Size.Width,
-                                      workingArea.Bottom - Size.Height);
+            ResetPosition();
 
             lblName.Height = this.Size.Height;
             lblName.Width = this.Size.Height;
@@ -32,7 +30,20 @@ namespace DesktopLabel
 
             txtName.KeyPress += txtLocal_KeyPress;
             lblName.Click += lblName_Click;
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += new EventHandler(DisplaySettingsChanged);
             //lblName.MouseHover += HideForm;
+        }
+
+        private void DisplaySettingsChanged(object sender, System.EventArgs e)
+        {
+            ResetPosition();
+        }
+
+        private void ResetPosition()
+        {
+            Rectangle workingArea = Screen.GetWorkingArea(this);
+            this.Location = new Point(workingArea.Right - Size.Width,
+                                      workingArea.Bottom - Size.Height);
         }
 
         private void HideForm(object sender, EventArgs e)
